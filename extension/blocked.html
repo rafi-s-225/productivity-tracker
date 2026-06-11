@@ -44,13 +44,9 @@
   <p style="color:#64748b; font-size:0.85rem; margin-bottom:24px;">
     Stay focused! You can unblock it from the extension popup.
   </p>
-  <button onclick="history.back()" class="back">← Go Back</button>
-  <button onclick="window.close()">Close Tab</button>
+  <button id="backBtn" class="back">← Go Back</button>
+  <button id="closeBtn">Close Tab</button>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const site   = params.get('site') || 'this site';
-    document.getElementById('siteName').textContent = site;
-  </script>
+  <script src="blocked.js"></script>
 </body>
 </html>

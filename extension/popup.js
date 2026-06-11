@@ -11,16 +11,21 @@ function getToday() {
   return new Date().toISOString().split('T')[0];
 }
 
-// ── on load ──────────────────────────────────────────────
+// ── on load ───────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.storage.local.get(['userId', 'username'], (result) => {
-    if (result.userId) {
-      showMain(result.userId);
-    }
+  // Attach button listeners
+  document.getElementById('loginBtn').addEventListener('click', login);
+  document.getElementById('registerBtn').addEventListener('click', register);
+  document.getElementById('logoutBtn').addEventListener('click', logout);
+  document.getElementById('blockBtn').addEventListener('click', blockSite);
+
+  // Check if already logged in
+  chrome.storage.local.get(['userId'], (result) => {
+    if (result.userId) showMain(result.userId);
   });
 });
 
-// ── auth ─────────────────────────────────────────────────
+// ── auth ──────────────────────────────────────────────────
 async function login() {
   const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
@@ -66,7 +71,7 @@ async function register() {
 
 function logout() {
   chrome.storage.local.clear();
-  document.getElementById('mainSection').style.display = 'none';
+  document.getElementById('mainSection').style.display  = 'none';
   document.getElementById('loginSection').style.display = 'block';
 }
 
@@ -78,7 +83,6 @@ function showLoginStatus(msg) {
 async function showMain(userId) {
   document.getElementById('loginSection').style.display = 'none';
   document.getElementById('mainSection').style.display  = 'block';
-
   await loadStats(userId);
   await loadBlocklist(userId);
 }
@@ -96,9 +100,9 @@ async function loadStats(userId) {
       else unproductive += s.duration;
     });
 
-    document.getElementById('totalTime').textContent       = formatTime(total);
-    document.getElementById('productiveTime').textContent  = formatTime(productive);
-    document.getElementById('unproductiveTime').textContent= formatTime(unproductive);
+    document.getElementById('totalTime').textContent        = formatTime(total);
+    document.getElementById('productiveTime').textContent   = formatTime(productive);
+    document.getElementById('unproductiveTime').textContent = formatTime(unproductive);
   } catch {
     document.getElementById('totalTime').textContent = 'Error';
   }
@@ -109,18 +113,25 @@ async function loadBlocklist(userId) {
     const res  = await fetch(`${API}/blocklist/${userId}`);
     const data = await res.json();
 
-    // Save to local storage for content.js to use
     chrome.storage.local.set({ blocklist: data.map(e => e.domain) });
 
     const container = document.getElementById('blockedList');
     container.innerHTML = '';
+
     data.forEach(entry => {
       const div = document.createElement('div');
       div.className = 'site-item';
-      div.innerHTML = `
-        <span>${entry.domain}</span>
-        <button class="remove-btn" onclick="unblockSite('${entry.domain}')">✕</button>
-      `;
+
+      const span = document.createElement('span');
+      span.textContent = entry.domain;
+
+      const btn = document.createElement('button');
+      btn.textContent = '✕';
+      btn.className = 'remove-btn';
+      btn.addEventListener('click', () => unblockSite(entry.domain));
+
+      div.appendChild(span);
+      div.appendChild(btn);
       container.appendChild(div);
     });
   } catch {}

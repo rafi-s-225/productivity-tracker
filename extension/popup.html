@@ -40,6 +40,7 @@
     .danger { background: #ef4444; }
     .danger:hover { background: #dc2626; }
     .success { background: #10b981; }
+    .success:hover { background: #059669; }
     .site-item {
       display: flex;
       justify-content: space-between;
@@ -60,7 +61,7 @@
       padding: 0 4px;
     }
     #status { font-size: 0.78rem; color: #10b981; text-align: center; margin-top: 4px; }
-    #loginSection input { margin-bottom: 8px; }
+    #loginStatus { font-size: 0.78rem; color: #f87171; text-align: center; margin-top: 4px; }
     .stat { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 4px 0; }
     .stat span:last-child { color: #60a5fa; font-weight: bold; }
   </style>
@@ -73,30 +74,29 @@
     <h3>Login</h3>
     <input type="email"    id="email"    placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <button onclick="register()" class="success">Register</button>
+    <button id="loginBtn">Login</button>
+    <button id="registerBtn" class="success">Register</button>
     <div id="loginStatus"></div>
   </div>
 
-  <!-- Main Section (shown after login) -->
+  <!-- Main Section -->
   <div id="mainSection" style="display:none">
-
     <div class="section">
       <h3>Today's Stats</h3>
-      <div class="stat"><span>Total Time</span>     <span id="totalTime">-</span></div>
-      <div class="stat"><span>Productive</span>     <span id="productiveTime">-</span></div>
-      <div class="stat"><span>Unproductive</span>   <span id="unproductiveTime">-</span></div>
+      <div class="stat"><span>Total Time</span>      <span id="totalTime">-</span></div>
+      <div class="stat"><span>Productive</span>      <span id="productiveTime">-</span></div>
+      <div class="stat"><span>Unproductive</span>    <span id="unproductiveTime">-</span></div>
     </div>
 
     <div class="section">
       <h3>Block a Site</h3>
       <input type="text" id="blockInput" placeholder="e.g. youtube.com" />
-      <button onclick="blockSite()" class="danger">Block Site</button>
+      <button id="blockBtn" class="danger">Block Site</button>
       <div id="blockedList"></div>
     </div>
 
     <div class="section">
-      <button onclick="logout()" class="danger">Logout</button>
+      <button id="logoutBtn" class="danger">Logout</button>
     </div>
 
     <div id="status"></div>
