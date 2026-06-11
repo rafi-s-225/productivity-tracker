@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Productivity Tracker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 320px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      padding: 16px;
+    }
+    h2 { font-size: 1rem; color: #60a5fa; margin-bottom: 14px; text-align: center; }
+    .section { background: #1e293b; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .section h3 { font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; }
+    input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f1f5f9;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-bottom: 6px;
+    }
+    button:hover { background: #2563eb; }
+    .danger { background: #ef4444; }
+    .danger:hover { background: #dc2626; }
+    .success { background: #10b981; }
+    .site-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #334155;
+      font-size: 0.82rem;
+    }
+    .site-item:last-child { border-bottom: none; }
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #f87171;
+      cursor: pointer;
+      font-size: 0.9rem;
+      width: auto;
+      margin: 0;
+      padding: 0 4px;
+    }
+    #status { font-size: 0.78rem; color: #10b981; text-align: center; margin-top: 4px; }
+    #loginSection input { margin-bottom: 8px; }
+    .stat { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 4px 0; }
+    .stat span:last-child { color: #60a5fa; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>🎯 Productivity Tracker</h2>
+
+  <!-- Login Section -->
+  <div class="section" id="loginSection">
+    <h3>Login</h3>
+    <input type="email"    id="email"    placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <button onclick="register()" class="success">Register</button>
+    <div id="loginStatus"></div>
+  </div>
+
+  <!-- Main Section (shown after login) -->
+  <div id="mainSection" style="display:none">
+
+    <div class="section">
+      <h3>Today's Stats</h3>
+      <div class="stat"><span>Total Time</span>     <span id="totalTime">-</span></div>
+      <div class="stat"><span>Productive</span>     <span id="productiveTime">-</span></div>
+      <div class="stat"><span>Unproductive</span>   <span id="unproductiveTime">-</span></div>
+    </div>
+
+    <div class="section">
+      <h3>Block a Site</h3>
+      <input type="text" id="blockInput" placeholder="e.g. youtube.com" />
+      <button onclick="blockSite()" class="danger">Block Site</button>
+      <div id="blockedList"></div>
+    </div>
+
+    <div class="section">
+      <button onclick="logout()" class="danger">Logout</button>
+    </div>
+
+    <div id="status"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
