@@ -5,7 +5,7 @@ A Chrome extension that tracks time spent on websites, blocks distracting sites,
 ## ✨ Features
 
 - ⏱️ Tracks time spent on each website
-- 🚫 Blocks distracting sites (e.g. YouTube, Instagram)
+- 🚫 Blocks distracting sites
 - 📊 Daily & weekly productivity reports on the web dashboard
 - 🔄 Extension and dashboard sync automatically
 
