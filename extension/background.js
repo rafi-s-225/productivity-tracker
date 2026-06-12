@@ -1,5 +1,25 @@
 const API = 'http://localhost:5000/api';
 
+async function syncBlocklistNow() {
+  const userId = await getUserId();
+  if (!userId) return;
+  try {
+    const res  = await fetch(`${API}/blocklist/${userId}`);
+    const data = await res.json();
+    const domains = data.map(entry => entry.domain);
+    chrome.storage.local.set({ blocklist: domains });
+    console.log('Blocklist synced:', domains);
+  } catch (err) {
+    console.log('Sync failed:', err);
+  }
+}
+
+// Run sync immediately when service worker starts
+syncBlocklistNow();
+
+// Sync every 1 minute (instead of 5)
+chrome.alarms.create('syncBlocklist', { periodInMinutes: 1 });
+
 let activeTabDomain = null;
 let activeTabStart  = null;
 
@@ -113,18 +133,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 });
 
-// ── sync blocklist from backend every 5 minutes ───────────
-chrome.alarms.create('syncBlocklist', { periodInMinutes: 5 });
-
-chrome.alarms.onAlarm.addListener(async (alarm) => {
+chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'syncBlocklist') {
-    const userId = await getUserId();
-    if (!userId) return;
-    try {
-      const res  = await fetch(`${API}/blocklist/${userId}`);
-      const data = await res.json();
-      const domains = data.map(entry => entry.domain);
-      chrome.storage.local.set({ blocklist: domains });
-    } catch {}
+    syncBlocklistNow();
   }
 });
